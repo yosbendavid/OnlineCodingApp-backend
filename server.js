@@ -48,16 +48,10 @@ mongoose.connect('mongodb+srv://yosbendavid:QQ5waku2JrjaXfEA@cluster0.r4ehk1d.mo
 
 const server = http.createServer(app);
 const io = new Server(server, {
-    cors: {
-        origin: function (origin, callback) {
-            if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-                callback(null, true);
-            } else {
-                callback(new Error("Not allowed by CORS"));
-            }
-        },
-        methods: ["GET", "POST"],
-    }
+        cors: {
+          origin: "https://onlinecodingapp-frontent-production.up.railway.app",
+          methods: ["GET", "POST"]
+        }
 });
 
 server.listen(port, () => {
