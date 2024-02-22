@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const port = process.env.PORT || 3001;
+const port = process.env.PORT;
 const { dbConnection } = require('./database');
 const CodeBlock = require('./models/codeBlock');
 const http = require('http');
@@ -13,19 +13,21 @@ const allowedOrigins = [
     'https://onlinecodingapp-frontent-production.up.railway.app/' // Deployment URL
 ];
 
-app.use(cors({
-    origin: function (origin, callback) {
-        // Allow requests with no origin (like mobile apps or curl requests)
-        if (!origin) return callback(null, true);
-        if (allowedOrigins.indexOf(origin) === -1) {
-            var msg = 'The CORS policy for this site does not ' +
-                'allow access from the specified Origin.';
-            return callback(new Error(msg), false);
-        }
-        return callback(null, true);
-    },
-    methods: ["GET", "POST"],
-}));
+// app.use(cors({
+//     origin: function (origin, callback) {
+//         // Allow requests with no origin (like mobile apps or curl requests)
+//         if (!origin) return callback(null, true);
+//         if (allowedOrigins.indexOf(origin) === -1) {
+//             var msg = 'The CORS policy for this site does not ' +
+//                 'allow access from the specified Origin.';
+//             return callback(new Error(msg), false);
+//         }
+//         return callback(null, true);
+//     },
+//     methods: ["GET", "POST"],
+// }));
+
+app.use(cors());
 
 // app.use(express.static(path.join(__dirname, '../client/build')));
 app.use(express.json());
