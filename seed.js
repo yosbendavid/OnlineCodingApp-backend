@@ -22,7 +22,7 @@ const codeBlockSchema = new mongoose.Schema({
   },
   example: {
     type: String,
-    required: true,
+    required: false,
   },
   code: {
     type: String,
@@ -35,66 +35,78 @@ const codeBlockSchema = new mongoose.Schema({
 });
 
 // Step 4: Create Model
-const MyCollection = mongoose.model('Problems', codeBlockSchema);
+const MyCollection = mongoose.model('problems', codeBlockSchema);
 
 //step 5: create the CB's
 const newCodeBlock1 = new MyCollection({
-    title: 'Two Sum',
-    explanation: 'Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.\nYou may assume that each input would have exactly one solution, and you may not use the same element twice.\nYou can return the answer in any order.',
-    example: 'Input: nums = [2,7,11,15]\ntarget = 9\nOutput: [0,1]\nExplanation: Because nums[0] + nums[1] == 9, we return [0, 1].',
+    title: 'Sum Two',
+    explanation: 'Given two integers return the sum.',
+    example: 'Input: a = 1\ntarget = 1\nOutput: 2\nExplanation: Because a + b == 2, we return 2.',
     code: 
-    `var nums = [2,9,11,15];
-    var target = 9;
-    var twoSum = function(nums, target) {
+    `var a = 5;
+    var b = 6;
+    var twoSum = function(a, b) {
 
-      //Code goes here..
+      
       
     };`,
     solution: 
+    `var a = 5;
+    var b = 6;
+    var twoSum = function(a, b) {
+
+      let c = a + b;
+      
+      return c;
+    };`,
+});
+
+const newCodeBlock2 = new MyCollection({
+    title: 'alert',
+    explanation: 'Use JS to alert to client and say Hello world',
+    example: 'a****("Hello world");',
+    code: 
+    ``,
+    solution: `alert("Hello world");`,
+});
+
+const newCodeBlock3 = new MyCollection({
+  title: 'Compares',
+  explanation: 'Return change the values and console.log() true',
+  example: '',
+  code: 
+  `console.log(5 == 'a');
+  console.log(5 === '5');
+  `,
+  solution: `alert("Hello world");`,
+});
+
+const newCodeBlock4 = new MyCollection({
+  title: 'Leetcode - Two Sum',
+  explanation: 'Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.\nYou may assume that each input would have exactly one solution, and you may not use the same element twice.\n return in time complexity of O(n).',
+  example: 'Input: nums = [2,7,11,15]\ntarget = 9\nOutput: [0,1]\nExplanation: Because nums[0] + nums[1] == 9, we return [0, 1].',
+  code: 
+  `var nums = [2,9,11,15];
+  var target = 9;
+  var twoSum = function(nums, target) {
+
+    //Code goes here..
+    
+  };`,
+  solution: 
 `
 var nums = [2,9,11,15];
 var target = 9;
 var twoSum = function(nums, target) {
-  let mp = new Map();
-  let diff = target - nums[i];
-  for (let i = 0; i < nums.length; i++) {
-    if (mp.has(diff)) {
-      return [i, mp.get(diff)];
-    }
-    mp.set(nums[i], i);
+let mp = new Map();
+let diff = target - nums[i];
+for (let i = 0; i < nums.length; i++) {
+  if (mp.has(diff)) {
+    return [i, mp.get(diff)];
   }
+  mp.set(nums[i], i);
+}
 };`,
-});
-
-const newCodeBlock2 = new MyCollection({
-    title: 'Two Sum',
-    explanation: `Given an integer x, return true if x is a palindrome, and false otherwise.`,
-    example: `Input: x = 121
-    Output: true
-    Explanation: 121 reads as 121 from left to right and from right to left.
-    `,
-    code: 
-    `var isPalindrome = function(x) {
-    
-    };
-    `,
-    solution: 'var nums = [2,9,11,15];\nvar target = 9;\nvar twoSum = function(nums, target) {\nlet mp = new Map();\nfor (let i = 0; i < nums.length; i++) {\nlet diff = target - nums[i];\nif (mp.has(diff)) {\nreturn [i, mp.get(diff)];\n}\nmp.set(nums[i], i);\n}\n};',
-});
-
-const newCodeBlock3 = new MyCollection({
-    title: 'Two Sum',
-    explanation: 'Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.\nYou may assume that each input would have exactly one solution, and you may not use the same element twice.\nYou can return the answer in any order.',
-    example: 'Input: nums = [2,7,11,15], target = 9\nOutput: [0,1]\nExplanation: Because nums[0] + nums[1] == 9, we return [0, 1].',
-    code: 'var nums = [2,9,11,15];\nvar target = 9;\nvar twoSum = function(nums, target) {\n};',
-    solution: 'var nums = [2,9,11,15];\nvar target = 9;\nvar twoSum = function(nums, target) {\nlet mp = new Map();\nfor (let i = 0; i < nums.length; i++) {\nlet diff = target - nums[i];\nif (mp.has(diff)) {\nreturn [i, mp.get(diff)];\n}\nmp.set(nums[i], i);\n}\n};',
-});
-
-const newCodeBlock4 = new MyCollection({
-    title: 'Two Sum',
-    explanation: 'Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.\nYou may assume that each input would have exactly one solution, and you may not use the same element twice.\nYou can return the answer in any order.',
-    example: 'Input: nums = [2,7,11,15], target = 9\nOutput: [0,1]\nExplanation: Because nums[0] + nums[1] == 9, we return [0, 1].',
-    code: 'var nums = [2,9,11,15];\nvar target = 9;\nvar twoSum = function(nums, target) {\n};',
-    solution: 'var nums = [2,9,11,15];\nvar target = 9;\nvar twoSum = function(nums, target) {\nlet mp = new Map();\nfor (let i = 0; i < nums.length; i++) {\nlet diff = target - nums[i];\nif (mp.has(diff)) {\nreturn [i, mp.get(diff)];\n}\nmp.set(nums[i], i);\n}\n};',
 });
 
 // Save each code block to the database

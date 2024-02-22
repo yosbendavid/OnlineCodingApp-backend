@@ -1,7 +1,6 @@
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 3001;
-const { dbConnection } = require('./database');
 const CodeBlock = require('./models/codeBlock');
 const http = require('http');
 const { Server } = require("socket.io");
