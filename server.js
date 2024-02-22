@@ -8,35 +8,10 @@ const { Server } = require("socket.io");
 const cors = require('cors');
 const mongoose = require('mongoose');
 
-const allowedOrigins = [
-    'http://localhost:3000', // Local development URL
-    'https://onlinecodingapp-frontent-production.up.railway.app/' // Deployment URL
-];
-
-// app.use(cors({
-//     origin: function (origin, callback) {
-//         // Allow requests with no origin (like mobile apps or curl requests)
-//         if (!origin) return callback(null, true);
-//         if (allowedOrigins.indexOf(origin) === -1) {
-//             var msg = 'The CORS policy for this site does not ' +
-//                 'allow access from the specified Origin.';
-//             return callback(new Error(msg), false);
-//         }
-//         return callback(null, true);
-//     },
-//     methods: ["GET", "POST"],
-// }));
-
 app.use(cors());
 
-// app.use(express.static(path.join(__dirname, '../client/build')));
 app.use(express.json());
 
-// app.get('*', (req, res) => {
-//     res.sendFile(path.join(__dirname + '../client/build/index.html'));
-// });
-
-// Properly handle MongoDB connection errors
 mongoose.connect('mongodb+srv://yosbendavid:QQ5waku2JrjaXfEA@cluster0.r4ehk1d.mongodb.net/OnlineCodingApp')
     .then(() => {
         console.log('MongoDB connected successfully');
@@ -47,19 +22,11 @@ mongoose.connect('mongodb+srv://yosbendavid:QQ5waku2JrjaXfEA@cluster0.r4ehk1d.mo
     });
 
 const server = http.createServer(app);
-// const io = new Server(server, {
-//     cors: {
-//         origin: 'https://onlinecodingapp-frontent-production.up.railway.app/',
-//     }
-// });
+
 const io = new Server(server, {
 cors: {
     origin: function (origin, callback) {
-        // if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
             callback(null, true);
-        // } else {
-        //     callback(new Error("Not allowed by CORS"));
-        // }
     },
     methods: ["GET", "POST"],
 }
@@ -69,7 +36,6 @@ server.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
 
-// Use async/await for route handlers to handle asynchronous operations more cleanly
 app.get('/getAllCodeBlocks', async (req, res) => {
     try {
         const codeBlocks = await CodeBlock.find();
@@ -80,7 +46,6 @@ app.get('/getAllCodeBlocks', async (req, res) => {
     }
 });
 
-// Implement input validation for the ID parameter
 app.get('/getCodeBlock/:id', async (req, res) => {
     try {
         const codeBlock = await CodeBlock.findById(req.params.id);
@@ -124,8 +89,6 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
         console.log(`User disconnected: ${socket.id}`);
 
-        // Clean up any socket-related resources or data
-        // For example, remove the socket from the `numOfPeopleInCodeBlock` map
         numOfPeopleInCodeBlock.forEach((value, key) => {
             if (value > 0) {
                 numOfPeopleInCodeBlock.set(key, value - 1);

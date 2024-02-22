@@ -34,18 +34,8 @@ const codeBlockSchema = new mongoose.Schema({
   },
 });
 
-const userSchema = new mongoose.Schema({
-    type: {
-      type: String,
-      required: true,
-    },
-    
-});
-
 // Step 4: Create Model
 const MyCollection = mongoose.model('Problems', codeBlockSchema);
-
-const userCollection = mongoose.model('Users', userSchema);
 
 //step 5: create the CB's
 const newCodeBlock1 = new MyCollection({
@@ -106,16 +96,6 @@ const newCodeBlock4 = new MyCollection({
     code: 'var nums = [2,9,11,15];\nvar target = 9;\nvar twoSum = function(nums, target) {\n};',
     solution: 'var nums = [2,9,11,15];\nvar target = 9;\nvar twoSum = function(nums, target) {\nlet mp = new Map();\nfor (let i = 0; i < nums.length; i++) {\nlet diff = target - nums[i];\nif (mp.has(diff)) {\nreturn [i, mp.get(diff)];\n}\nmp.set(nums[i], i);\n}\n};',
 });
-
-const newUser1 = new userCollection({
-    type:"Observer"
-});
-
-const newUser2 = new userCollection({
-    type: "Editor"
-});
-
-
 
 // Save each code block to the database
 Promise.all([
