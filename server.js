@@ -10,7 +10,7 @@ const mongoose = require('mongoose');
 
 const allowedOrigins = [
     'http://localhost:3000', // Local development URL
-    'https://onlinecodingapp.up.railway.app' // Deployment URL
+    'https://onlinecodingapp-frontent-production.up.railway.app/' // Deployment URL
 ];
 
 app.use(cors({
