@@ -27,7 +27,7 @@ cors: {
     origin: function (origin, callback) {
             callback(null, true);
     },
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST", "PUT"],
 }
 });
 
@@ -58,6 +58,22 @@ app.get('/getCodeBlock/:id', async (req, res) => {
     }
 });
 
+app.put('/updateCodeBlock/:id', async (req, res) => {
+    const { id } = req.params;
+    const { code } = req.body; // Adjusted to extract 'code' from the request body
+
+    try {
+        const updatedCodeBlock = await CodeBlock.findByIdAndUpdate(id, { code }, { new: true });
+        if (!updatedCodeBlock) {
+            return res.status(404).json({ error: 'Code block not found' });
+        }
+        res.json(updatedCodeBlock);
+    } catch (error) {
+        console.error('Error updating code block:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 // Use a Map instead of an object for numOfPeopleInCodeBlock for better performance and readability
 const numOfPeopleInCodeBlock = new Map();
 
@@ -67,13 +83,11 @@ io.on('connection', (socket) => {
     socket.on('accessCodeBlockPage', ({ codeBlockId }) => {
         const count = numOfPeopleInCodeBlock.get(codeBlockId) || 0;
         numOfPeopleInCodeBlock.set(codeBlockId, count + 1);
-        console.log(`Number of people in code block ${codeBlockId}: ${numOfPeopleInCodeBlock.get(codeBlockId)}`);
     });
 
     socket.on('leaveCodeBlockPage', ({ codeBlockId }) => {
         const count = Math.max((numOfPeopleInCodeBlock.get(codeBlockId) || 0) - 1, 0);
         numOfPeopleInCodeBlock.set(codeBlockId, count);
-        console.log(`Person left. Number of people in code block ${codeBlockId}: ${numOfPeopleInCodeBlock.get(codeBlockId)}`);
     });
 
     socket.on('requestIsFirstUser', ({ codeBlockId }) => {
@@ -81,18 +95,8 @@ io.on('connection', (socket) => {
         socket.emit("recievedIsFirstUser", isFirstUser);
     });
 
-    socket.on('updateText', (text) => {
-        io.emit('textUpdated', text);
+    socket.on('updateText', ({codeBlockId, text}) => {
+        io.emit(`textUpdated-${codeBlockId}`, text);
     });
 
-    socket.on('disconnect', () => {
-        console.log(`User disconnected: ${socket.id}`);
-
-        numOfPeopleInCodeBlock.forEach((value, key) => {
-            if (value > 0) {
-                numOfPeopleInCodeBlock.set(key, value - 1);
-                console.log(`Person left. Number of people in code block ${key}: ${numOfPeopleInCodeBlock.get(key)}`);
-            }
-        });
-    });
 });
