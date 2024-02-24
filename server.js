@@ -82,11 +82,14 @@ io.on('connection', (socket) => {
 
     socket.on('accessCodeBlockPage', ({ codeBlockId }) => {
         const count = numOfPeopleInCodeBlock.get(codeBlockId) || 0;
+        console.log("accessCodeBlockPage numOfPeople =  "+count+"\n "+codeBlockId)
         numOfPeopleInCodeBlock.set(codeBlockId, count + 1);
     });
 
     socket.on('leaveCodeBlockPage', ({ codeBlockId }) => {
         const count = Math.max((numOfPeopleInCodeBlock.get(codeBlockId) || 0) - 1, 0);
+        console.log("leaveCodeBlockPage numOfPeople =  "+count+"\n "+codeBlockId)
+
         numOfPeopleInCodeBlock.set(codeBlockId, count);
     });
 
